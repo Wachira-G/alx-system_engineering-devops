@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# This script  displays numbers from 1 to 100.
+# Displays "FizzBuzz" when the number is a multiple of 3 and 5
+# Displays "Fizz" when the number is multiple of 3
+# Displays "Buzz" when the number is a multiple of 5
+# Otherwise, displays the number
+# In a list format
+
+number="1"
+
+while ((number <= 100));
+do
+    case $((number % 15)) in 
+        0)
+            echo "FizzBuzz"
+            ;;
+        3|6|9|12)
+            echo "Fizz"
+            ;;
+        5|10)
+            echo "Buzz"
+            ;;
+        *)
+            echo $number
+            ;;
+    esac
+    number=$((number + 1))
+done

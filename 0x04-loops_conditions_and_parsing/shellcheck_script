@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# This script runs the shellcheck program for each script in directory
+
+for file in *;
+do
+    if [ -e "$file" ]; then
+        first_line=$(head -n 1 "$file")
+        if [[ $first_line == "#!"* ]]; then
+            echo cheking "$file"
+            shellcheck "$file"
+            echo checked
+            echo    
+        fi
+    fi
+done
