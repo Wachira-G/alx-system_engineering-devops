@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# This script kills the 4-to_infinity_and_beyond script process
+
+# Function to check if the process is running
+is_process_running() {
+  ps -p "$1" > /dev/null 2>&1
+}
+
+# Read the PID from the file
+pid=$(cat /tmp/infinity_pid)
+
+# Check if the process is running
+if is_process_running "$pid"; then
+  # Terminate the process # Kill the first script
+kill "$pid"
+fi
+
+# Cleanup the PID file
+rm /tmp/infinity_pid
