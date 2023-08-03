@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# This script configures an Ubuntu server with the requirements:
+# localhost resolves to 127.0.0.2
+# facebook.com resolves to 8.8.8.8
+
+# copy content of the /etc/hosts file to a new file for us to edit it
+grep -vx '127.*localhost' /etc/hosts > ~/hosts.new
+
+
+# make the desired changes
+# check if the script is running with sudo/root priviledges
+if [ "$EUID" -ne 0 ]; then
+	echo "Please run this script with sudo or as root."
+	exit 1
+fi
+
+# Functio ot update or add entry to /etc/hosts file
+function update_or_add_entry(){
+	local entry="$1"
+	local ip="$2"
+
+	# add the url and ip
+	echo "$ip $entry" | sudo tee -a ~/hosts.new > /dev/null
+}
+
+# update the file
+update_or_add_entry "localhost" "127.0.0.2"
+update_or_add_entry "facebook.com" "8.8.8.8"
+
+
+# copy back the /etc/hosts file with the updates
+sudo cp -f ~/hosts.new /etc/hosts
+
+# cleanup
+rm ~/hosts.new
