@@ -1,5 +1,5 @@
 # kills a process named killmenow
-service { 'killmenow':
-  ensure => 'stopped',
-  enable => false,
+exec { 'killmenow':
+  command => '/usr/bin/pkill killmenow',
+  path    => ['/bin', '/usr/bin/bin'],
 }
