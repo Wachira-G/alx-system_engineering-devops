@@ -1,7 +1,6 @@
 # installs python 3.8.10 using puppet
-package {
-  package { 'python3.8':
-    ensure => '3.8.10',
+package { 'python3.8':
+  ensure => '3.8.10',
 }
 
 # installs flask using puppet from pip3
