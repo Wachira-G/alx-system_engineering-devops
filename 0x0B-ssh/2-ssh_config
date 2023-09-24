@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# configure local SSH configuration file for the local SSH client
+# to connect to a server without typing a password
+# SSH client configuration configured to use the private key ~/.ssh/school
+# SSH client configuration configured to refuse to authenticate using password
+Host 54.160.78.191
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
