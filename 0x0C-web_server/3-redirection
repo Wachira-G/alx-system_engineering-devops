@@ -1,1 +1,6 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+# You answer file should be a Bash script containing commands
+# to automatically configure a Ubuntu machine
+# Using what you did with 1-install_nginx_web_server,
+# write 3-redirection so that it configures a brand new Ubuntu machine
+
