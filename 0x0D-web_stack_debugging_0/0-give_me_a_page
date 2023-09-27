@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# get Apache to run on a container to debug the webtack
+apt install apache2
+service apache2 start
