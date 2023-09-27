@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # installs a nginx on web-01
 
-sudo apt install nginx
+sudo apt install -y nginx
 
 sudo service nginx start
 
