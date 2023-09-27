@@ -5,7 +5,9 @@ sudo apt install -y nginx
 
 sudo service nginx start
 
-sudo echo 'server {\n    listen 80;\n    server_name _;\n\n    location / {\n        return 200 "Hello World!\n";\n    }\n}\n' > /etc/nginx/sites-available/default
+sudo echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# sudo echo 'server {\n    listen 80;\n    server_name _;\n\n    location / {\n        return 200 "Hello World!\n";\n    }\n}\n' > /etc/nginx/sites-available/default
 
 # sudo nginx -t # checks the status
 
