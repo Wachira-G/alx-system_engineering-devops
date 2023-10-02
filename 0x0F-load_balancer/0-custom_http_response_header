@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# This script configures a webserver with nginx, adds basic html page,
+# adds custome http header X-Serve-By with the value of the hostname
+
+if ! command -v nginx &> /dev/null; then
+	sudo apt update
+	sudo apt install -y nginx
+fi
+
+sudo service nginx start
+
+# Create a basic "Hello World!" HTML page
+sudo echo 'Hello World!' | sudo tee /var/www/html/index.html
+
+# Configure custom HTTP response header
+sudo echo 'add_header X-Served-By $hostname;' | sudo tee /etc/nginx/conf.d/0-custom-header.conf
+
+sudo nginx -t
+
+sudo service nginx reload
