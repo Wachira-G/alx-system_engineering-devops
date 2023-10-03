@@ -18,9 +18,9 @@ sudo echo "Hello World!" | sudo tee /var/www/html/index.html
 
 # Configure redirection for /redirect_me
 sudo sed -i '/server_name _;/a '\
-    '	location /redirect_me {\n'\
-    '		rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\n'\
-    '	}\n' /etc/nginx/sites-available/default
+    '	location /redirect_me {'\
+    '		rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;'\
+    '	}' /etc/nginx/sites-available/default
 
 # Restart Nginx to apply the changes
 sudo service nginx restart
