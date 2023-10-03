@@ -10,7 +10,7 @@ fi
 sudo service nginx start
 
 # Create a basic "Hello World!" HTML page
-# sudo echo 'Hello World!' | sudo tee /var/www/html/index.nginx-debian.html
+sudo echo 'Hello World!' | sudo tee /var/www/html/index.nginx-debian.html
 
 # Configure custom HTTP response header
 sudo echo 'add_header X-Served-By $hostname;' | sudo tee /etc/nginx/conf.d/0-custom-header.conf
