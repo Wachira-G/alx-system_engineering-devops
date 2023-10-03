@@ -22,7 +22,7 @@ file { '/var/www/html/index.html':
 # Configure Nginx for redirection /redirect_me
 file { '/etc/nginx/sites-available/redirect_me':
   ensure  => 'file',
-  content => "location /redirect_me {\n  return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n}\n",
+  content => "location /redirect_me {\n rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\n }\n"
   require => Package['nginx'],
 }
 
