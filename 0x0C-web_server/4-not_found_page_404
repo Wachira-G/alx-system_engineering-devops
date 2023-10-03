@@ -9,7 +9,7 @@ sudo apt install -y nginx
 # Start Nginx
 sudo service nginx start
 
-sudo echo "Hello World" | sudo tee /var/www/html/index
+sudo echo "Hello World!" | sudo tee /var/www/html/index
 
 sudo sed -i "/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default
 
@@ -17,7 +17,11 @@ sudo sed -i "/listen 80 default_server/a rewrite ^/redirect_me https://www.youtu
 sudo echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
 
 # Modify the Nginx configuration to use the custom 404 page
-sudo sed -i '/watch?v=QH2-TGUlwu4;\n   }/a \    error_page 404 /custom_404.html;\n    location = /custom_404.html {\n        internal;\n    };\n' /etc/nginx/sites-available/default
+sudo sed -i '/watch?v=QH2-TGUlwu4;\n   }/a \
+	     error_page 404 /custom_404.html;\n\
+	     location = /custom_404.html {\n\
+		     internal;\n\
+	     };\n' /etc/nginx/sites-available/default
 
 # Restart Nginx to apply the changes
 sudo service nginx restart
