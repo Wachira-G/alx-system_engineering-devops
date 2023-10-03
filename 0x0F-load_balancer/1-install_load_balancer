@@ -16,7 +16,12 @@ sudo apt-get install haproxy=2.0.\* -y
 if [ ! -f /etc/default/haproxy.orig ]; then
     sudo cp /etc/default/haproxy /etc/default/haproxy.orig
 fi
-# sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy # make ENABLED=1
+
+if ! grep -q "ENABLED=" /etc/default/haproxy; then
+    sudo echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+else
+    sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy # make ENABLED=1
+fi
 
 
 # make a backup of the original config file
@@ -25,7 +30,38 @@ if [ ! -f /etc/haproxy/haproxy.cfg.orig ]; then
 fi
 
 # Configure HAProxy
-#sudo vi /etc/haproxy/haproxy.cfg
+# sudo vi /etc/haproxy/haproxy.cfg # or auto as below:
+# Configure HAProxy
+sudo nano /etc/haproxy/haproxy.cfg <<EOL
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend lb-01
+        bind *:80
+        default_backend backend_servers
+
+backend backend_servers
+        balance roundrobin
+        server 230758-web-01 54.160.78.191:80 check
+        server 230758-web-02 54.146.88.214:80 check
+
+EOL
 
 # Enable logging in HAProxy
 #sudo vi /etc/rsyslog.conf
