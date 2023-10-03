@@ -5,13 +5,25 @@
 # write 3-redirection so that it configures a brand new Ubuntu machine
 #!/usr/bin/env bash
 # installs a nginx on web-01
+
+# Update the package repository
 sudo apt update
+
+# Install Nginx
 sudo apt install -y nginx
 
+# Start Nginx
 sudo service nginx start
 
-sudo echo "Hello World" | sudo tee /var/www/html/index
+# Create an index.html file with "Hello World!"
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
-sudo sed -i "/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default
+# Configure redirection for /redirect_me
+sudo sed -i '/server_name _;/a \
+	location /redirect_me {\n\
+		rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\n\
+	}\n' /etc/nginx/sites-available/default
 
+# Restart Nginx to apply the changes
 sudo service nginx restart
+
