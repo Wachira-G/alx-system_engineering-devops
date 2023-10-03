@@ -3,8 +3,6 @@
 # to automatically configure a Ubuntu machine
 # Using what you did with 1-install_nginx_web_server,
 # write 3-redirection so that it configures a brand new Ubuntu machine
-#!/usr/bin/env bash
-# installs a nginx on web-01
 
 # Update the package repository
 sudo apt update
@@ -16,7 +14,7 @@ sudo apt install -y nginx
 sudo service nginx start
 
 # Create an index.html file with "Hello World!"
-echo "Hello World!" | sudo tee /var/www/html/index.html
+sudo echo "Hello World!" | sudo tee /var/www/html/index.html
 
 # Configure redirection for /redirect_me
 sudo sed -i '/server_name _;/a \
