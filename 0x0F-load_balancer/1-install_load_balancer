@@ -36,25 +36,7 @@ sudo cp -a /etc/haproxy/haproxy.cfg.orig /etc/haproxy/haproxy.cfg
 # sudo vi /etc/haproxy/haproxy.cfg # or auto as below:
 
 # Configure HAProxy
-sudo nano /etc/haproxy/haproxy.cfg <<EOL
-global
-    log /dev/log local0
-    log /dev/log local1 notice
-    chroot /var/lib/haproxy
-    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-    stats timeout 30s
-    user haproxy
-    group haproxy
-    daemon
-
-defaults
-    log global
-    mode http
-    option httplog
-    option dontlognull
-    timeout connect 5000
-    timeout client 50000
-    timeout server 50000
+config="\
 
 frontend lb-01
         bind *:80
@@ -65,8 +47,9 @@ backend backend_servers
         balance roundrobin
         server 230758-web-01 54.160.78.191:80 check
         server 230758-web-02 54.146.88.214:80 check
+"
 
-EOL
+sudo echo "$config" | sudo tee -a /etc/haproxy/haproxy.cfg
 
 # Enable logging in HAProxy
 #sudo vi /etc/rsyslog.conf
