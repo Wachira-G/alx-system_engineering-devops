@@ -17,7 +17,7 @@ if [ ! -f /etc/default/haproxy.orig ]; then
     sudo cp /etc/default/haproxy /etc/default/haproxy.orig
 fi
 
-if ! grep -q "ENABLED=" /etc/default/haproxy; then
+if [ ! grep -q "ENABLED=" /etc/default/haproxy ]; then
     sudo echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 else
     sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy # make ENABLED=1
