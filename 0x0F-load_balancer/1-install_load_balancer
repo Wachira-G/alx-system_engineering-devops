@@ -17,7 +17,7 @@ if [ ! -f /etc/default/haproxy.orig ]; then
     sudo cp /etc/default/haproxy /etc/default/haproxy.orig
 fi
 
-if [ ! grep -q "ENABLED=" /etc/default/haproxy ]; then
+if ! grep -q "ENABLED=" /etc/default/haproxy; then
     sudo echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 else
     sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy # make ENABLED=1
@@ -29,8 +29,12 @@ if [ ! -f /etc/haproxy/haproxy.cfg.orig ]; then
     sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
 fi
 
+# get config file to original state
+sudo cp -a /etc/haproxy/haproxy.cfg.orig /etc/haproxy/haproxy.cfg
+
 # Configure HAProxy
 # sudo vi /etc/haproxy/haproxy.cfg # or auto as below:
+
 # Configure HAProxy
 sudo nano /etc/haproxy/haproxy.cfg <<EOL
 global
@@ -54,6 +58,7 @@ defaults
 
 frontend lb-01
         bind *:80
+	mode http
         default_backend backend_servers
 
 backend backend_servers
