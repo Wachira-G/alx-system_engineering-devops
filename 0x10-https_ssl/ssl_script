@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+# This script
+
+#!/usr/bin/env bash
+# This script configures HAproxy on the lb-01 server
+
+# add necessary environmen prerequisites
+sudo apt update -y
+sudo apt install -y --no-install-recommends software-properties-common
+
+# app package repository source
+sudo add-apt-repository ppa:vbernat/haproxy-2.0 -y
+sudo apt update -y
+
+# install haproxy
+sudo apt-get install haproxy=2.0.\* -y
+
+# enable haproxy init script
+if [ ! -f /etc/default/haproxy.orig ]; then
+    sudo cp /etc/default/haproxy /etc/default/haproxy.orig
+fi
+
+if ! grep -q "ENABLED=" /etc/default/haproxy; then
+    sudo echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+else
+    sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy # make ENABLED=1
+fi
+
+
+# make a backup of the original config file
+if [ ! -f /etc/haproxy/haproxy.cfg.orig ]; then
+    sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
+fi
+
+# get config file to original state
+sudo cp -a /etc/haproxy/haproxy.cfg.orig /etc/haproxy/haproxy.cfg
+
+
+# install certbot
+#!/bin/bash
+
+if dpkg -l | grep -q certbot; then
+    echo "Certbot is already installed."
+else
+    sudo apt install certbot
+fi
+
+# Create a certificate using Certbot
+if sudo certbot certificates | grep -q "www.kahihu.tech"; then
+  echo "Certificate for www.kahihu.tech already exists."
+else
+  echo "Certificate does not exist. Creating a new one..."
+  sudo certbot certonly --standalone -d www.kahihu.tech
+  # sudo certbot certonly --nginx -d www.kahihu.tech
+fi
+
+
+# Configure HAProxy
+# sudo vi /etc/haproxy/haproxy.cfg # or auto as below:
+
+# Configure HAProxy with ssl cert
+config="\
+
+frontend lb-01
+        bind *:80
+        mode http
+        option httplog
+        option forwardfor
+        redirect scheme https code 301 if !{ ssl_fc }
+        # default_backend backend_servers
+
+frontend lb-01-ssl
+        bind *:443 ssl crt /etc/letsencrypt/live/www.kahihu.tech/fullchain.pem
+        reqadd X-Forwarded-Proto:\ https
+        default_backend backend_servers
+
+frontend letsencrypt-frontend
+        bind *:80
+        mode http
+        option forwardfor
+        acl letsencrypt-acl path_beg -i /.well-known/acme-challenge/
+        use_backend letsencrypt-backend if letsencrypt-acl
+
+backend backend_servers
+        balance roundrobin
+        server 230758-web-01 54.160.78.191:80 check
+        server 230758-web-02 54.146.88.214:80 check
+
+backend letsencrypt-backend
+        mode http
+        server letsencrypt-server 127.0.0.1:8888
+"
+
+sudo echo "$config" | sudo tee -a /etc/haproxy/haproxy.cfg
+
+# Enable logging in HAProxy
+#sudo vi /etc/rsyslog.conf
+
+# restart service for config to take effect
+sudo service haproxy restart
