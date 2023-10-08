@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# installs nginx, configures init file, starts it and tests it
+sudo apt install nginx -y
+sudo echo "ENABLED=1" | sudo tee -a /etc/default/nginx
+sudo service nginx start
