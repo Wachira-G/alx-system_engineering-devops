@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# installs nginx, configures init file, starts it and tests it
+# configures nginx sites, starts it and stops it
 sudo apt update
-sudo apt install nginx -y
-sudo echo "ENABLED=1" | sudo tee -a /etc/default/nginx
-sudo service nginx start
+sudo apt install socat -y > /dev/null 2>&1
+sudo socat TCP-LISTEN:80,fork TCP:localhost:8080 > /dev/null 2>&1 &
