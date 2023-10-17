@@ -1,0 +1,15 @@
+-- create db, table, row, add permission to holber 2 select table
+
+CREATE DATABASE IF NOT EXISTS tyrell_corp;
+
+USE tyrell_corp;
+
+CREATE TABLE IF NOT EXISTS nexus6(
+		id INT NOT NULL AUTO_INCREMENT,
+		name VARCHAR(45) NOT NULL,
+		PRIMARY KEY (id)
+);
+
+INSERT INTO nexus6(name) VALUES ('Leon');
+
+GRANT SELECT ON nexus6 TO 'holberton_user'@'localhost';

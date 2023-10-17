@@ -1,0 +1,7 @@
+-- creates the MySQL server user holberton_user,
+--   with permission to check primary/replica status of databases
+-- The 'holberton_user' should be set to 'projectcorrection280hbtn'
+
+CREATE USER IF NOT EXISTS 'holberton_user'@'localhost'
+    IDENTIFIED BY 'projectcorrection280hbtn';
+GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';
