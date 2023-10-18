@@ -3,6 +3,6 @@
 
 date=$(date +%d-%m-%Y)
 
-sudo mysqldump -uroot -p"$1" --no-tablespaces --lock-tables --all-databases > backup.sql
+mysqldump -uroot -p"$1" --no-tablespaces --lock-tables --all-databases > backup.sql
 
-tar -czvf "${date}.tar.gz" backup.sql
+tar -zcvf "${date}.tar.gz" backup.sql
