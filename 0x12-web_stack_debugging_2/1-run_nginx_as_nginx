@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# debugs a webstack running ngix and solves it
+
+# kill apache2 process
+kill "$(ps auxff | grep '^root' | grep '/usr/sbin/apache2 -k start$'| awk '{print $2}')"
+
+# comment out any existing user
+sed -i 's/^user/#&/' /etc/nginx/nginx.conf
+
+# make nginx the user
+sed -i '1i user nginx;\n' /etc/nginx/nginx.conf
+
+# change nginx to listen to port 8080 from 80
+sed -i 's/listen 80/listen 8080/g' /etc/nginx/sites-available/default
+sed -i 's/listen \[::\]:80/listen \[::\]:8080/g' /etc/nginx/sites-available/default
+
+# make nginx owner of config files
+chown -R nginx:nginx /etc/nginx/
+
+# login as nginx
+su nginx
+
+# update main config files permissions
+chmod 644 /etc/nginx/nginx.conf
+
+# start service as nginx
+service nginx start
+
+# logout as nginx
+exit

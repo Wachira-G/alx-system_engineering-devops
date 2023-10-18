@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# debugs a webstack running ngix and solves it
+kill "$(ps auxff | grep '^root' | grep '/usr/sbin/apache2 -k start$'| awk '{print $2}')"
+sed -i '1i user nginx;\n' /etc/nginx/nginx.conf
+sed -i 's/listen 80/listen 8080/g' /etc/nginx/sites-available/default
+sed -i 's/listen \[::\]:80/listen \[::\]:8080/g' /etc/nginx/sites-available/default
+chown -R nginx:nginx /etc/nginx/
+su nginx
+chmod 644 /etc/nginx/nginx.conf
+service nginx start
+exit
