@@ -2,7 +2,7 @@
 # debugs a webstack running ngix and solves it
 
 # kill apache2 process
-kill "$(ps auxff | grep '^root' | grep '/usr/sbin/apache2 -k start$'| awk '{print $2}')"
+pkill -u root -f '/usr/sbin/apache2 -k start$'
 
 # comment out any existing user
 sed -i 's/^user/#&/' /etc/nginx/nginx.conf
@@ -17,14 +17,8 @@ sed -i 's/listen \[::\]:80/listen \[::\]:8080/g' /etc/nginx/sites-available/defa
 # make nginx owner of config files
 chown -R nginx:nginx /etc/nginx/
 
-# login as nginx
-su nginx
-
 # update main config files permissions
-chmod 644 /etc/nginx/nginx.conf
+su nginx -s /bin/bash -c 'chmod 644 /etc/nginx/nginx.conf'
 
 # start service as nginx
-service nginx start
-
-# logout as nginx
-exit
+su nginx -s /bin/bash -c 'service nginx start'
