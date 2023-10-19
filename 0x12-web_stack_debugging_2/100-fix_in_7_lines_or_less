@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # debugs a webstack running ngix and solves it
 pkill -u root -f '/usr/sbin/apache2 -k start$'
-sed -i '1i user nginx;\n' /etc/nginx/nginx.conf
 sed -i -e 's/listen 80/listen 8080/g' -e 's/listen \[::\]:80/listen \[::\]:8080/g' /etc/nginx/sites-available/default
 chown -R nginx:nginx /etc/nginx/
 su nginx -s /bin/bash -c 'chmod 644 /etc/nginx/nginx.conf'
