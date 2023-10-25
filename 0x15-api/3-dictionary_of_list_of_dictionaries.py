@@ -18,7 +18,7 @@ if __name__ == "__main__":
             user_id: [
                 {
                     "task": task["title"],
-                    "complete": task["completed"],
+                    "completed": task["completed"],
                     "username": username,
                 }
                 for task in todos
