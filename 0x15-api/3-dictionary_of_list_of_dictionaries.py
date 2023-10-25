@@ -21,7 +21,7 @@ if __name__ == "__main__":
                     "completed": task["completed"],
                     "username": username,
                 }
-                for task in todos
+                for task in user_todos
             ]
         }
         full_data.update(dicti)
