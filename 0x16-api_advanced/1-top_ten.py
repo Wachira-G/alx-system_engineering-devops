@@ -26,10 +26,7 @@ def top_ten(subreddit):
             # key=lambda x: x[2],
             # reverse=True,
             #  )[:10]
-            if top_ten:
-                [print(post[1]) for post in top_ten]
-            else:
-                print(None)
+            [print(post[1]) for post in top_ten]
 
     except requests.exceptions.RequestException as e:
         print(None)
