@@ -13,23 +13,23 @@ def top_ten(subreddit):
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
 
-        if response.status_code == 404:
+        if response.status_code != 200:
             print(None)
-            return 0
 
         if response.status_code == 200:
-            top_ten =  [
+            top_ten = [
                     (child["data"]["name"],
                         child["data"]["title"],
                         child["data"]["ups"])
                     for child in response.json()["data"]["children"]
                     ][:10]  # ,
-                # key=lambda x: x[2],
-                # reverse=True,
-                #  )[:10]
+            # key=lambda x: x[2],
+            # reverse=True,
+            #  )[:10]
             if top_ten:
                 [print(post[1]) for post in top_ten]
-            print(None)
+            else:
+                print(None)
 
     except requests.exceptions.RequestException as e:
-        return 0
+        print(None)
