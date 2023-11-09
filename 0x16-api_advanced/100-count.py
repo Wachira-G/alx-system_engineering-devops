@@ -8,7 +8,7 @@ import requests
 
 def recurse(subreddit, hot_list=[], after=None):
     """Recurse finding hot articles of a subreddit."""
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {"User-Agent": "MyUserAgent"}
     params = {"after": after}
 
@@ -49,9 +49,11 @@ def count_words(subreddit, word_list):
             results[word.lower()] += count
         results[word.lower()] = count
 
-    results = dict(sorted(
-            results.items(), key=lambda item: (item[1], item[0]), reverse=True)
-    )
-    for word, count in results.items():
+    results = sorted(
+            results.items(), key=lambda item: (item[1], item[0]), reverse=True
+            )
+    for item in results:
+        word = item[0]
+        count = item[1]
         if count:
             print(word + ":", count)
