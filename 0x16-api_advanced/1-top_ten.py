@@ -18,18 +18,18 @@ def top_ten(subreddit):
             return 0
 
         if response.status_code == 200:
-            top_ten = sorted(
-                [
+            top_ten =  [
                     (child["data"]["name"],
                         child["data"]["title"],
                         child["data"]["ups"])
                     for child in response.json()["data"]["children"]
-                ],
-                key=lambda x: x[2],
-                reverse=True,
-            )[:10]
+                    ][:10]  # ,
+                # key=lambda x: x[2],
+                # reverse=True,
+                #  )[:10]
             if top_ten:
                 [print(post[1]) for post in top_ten]
+            print(None)
 
     except requests.exceptions.RequestException as e:
         return 0
