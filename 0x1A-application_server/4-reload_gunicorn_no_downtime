@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
-# reload Gunicorn in a graceful way.
+# gracefully reload Gunicorn.
 
-kill -HUP "$(systemctl status gunicorn | grep "Main PID" | awk '{print $3}')"
+# kill -HUP "$(systemctl status gunicorn | grep "Main PID" | awk '{print $3}')"
+
+for id in $(pgrep gunicorn);
+  do
+    kill -HUP $id;
+done
