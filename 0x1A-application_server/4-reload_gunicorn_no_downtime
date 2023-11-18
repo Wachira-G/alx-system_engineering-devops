@@ -5,5 +5,5 @@
 
 for id in $(pgrep gunicorn);
   do
-    kill -HUP $id;
+    kill -HUP "$id";
 done
